@@ -27,10 +27,20 @@ public class Basicauth extends WebSecurityConfigurerAdapter{
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests()
+		/*http.authorizeRequests()
 		.anyRequest().authenticated()
 		.and()
-	.httpBasic();
+	.httpBasic();*/
+		http.authorizeRequests()
+		.antMatchers("/mylogin","/h2-console").permitAll()
+		.anyRequest().authenticated()
+		.and()
+		.formLogin().loginPage("/mylogin").defaultSuccessUrl("/test",true)
+		.and()
+		.rememberMe().key("uniqueAndSecret").and()
+		.logout().logoutUrl("/logout").logoutSuccessUrl("/mylogin").deleteCookies("remember-me")
+		.and()
+		.csrf().disable();
 	}
 	
 	
